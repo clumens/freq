@@ -2,14 +2,15 @@
 #
 # freq - a script to print out how often everyone has logged on
 #
-# by Chris Lumens
-# last modified on June 1, 2004
-# (c) 1999-2004 Chris Lumens
-#
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
+#
+# by Chris Lumens
+# (c) 1999-2004 Chris Lumens
+#
+# $Id: freq,v 1.2 2004/06/01 04:24:28 chris Exp $
 
 use Config;
 use Getopt::Std;
@@ -75,6 +76,18 @@ sub version
 freq version $ver{maj}.$ver{min}.$ver{patch}$ver{extra}
 by Chris Lumens
 end_of_version
+
+   exit;
+}
+
+# print out an error on determining lastlog format and quit
+sub unknown_os
+{
+   print <<end_of_unknown_format;
+Unable to determine operating system's lastlog format.  Please send your
+operating system version and a sample of your lastlog's output to
+chris\@bangmoney.org to get your system into the supported list.
+end_of_unknown_format
 
    exit;
 }
@@ -193,6 +206,10 @@ elsif ($Config{'osname'} =~ /aix/i)
    {
       $unpack_str = "a8 x2 a8 x24 a3 x1 a3 x1 a3 x1 a2";
    }
+   else
+   {
+      unknown_os();
+   }
 }
 elsif ($Config{'osname'} =~ /next/i)
 {
@@ -201,6 +218,10 @@ elsif ($Config{'osname'} =~ /next/i)
 elsif ($Config{'osname'} =~ /freebsd/i)
 {  
    $unpack_str = "a16 x1 a6 x20 a3 x1 a3 x1 a2 x1 a2";
+}
+else
+{
+   unknown_os();
 }
 
 # loop through the last log and sum up everything
