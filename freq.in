@@ -1,0 +1,390 @@
+#!/usr/bin/perl
+#
+# freq - a script to print out how often everyone has logged on, noonch
+#
+# by Chris Lumens
+# last modified on March 2, 2001
+# (c) 1999, 2000, 2001 Chris Lumens
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+
+use Getopt::Std;
+
+use constant ALPHA      => 0;
+use constant ASCENDING  => 1;
+use constant DESCENDING => 2;
+
+my %args;            # command line arguments
+my $numeric = ALPHA; # with constants, no explanation is needed :)
+my $graph   = 0;     # no graph = 0; graph = 1
+
+   # we always want the basic information, so define it right now
+my %outputs = (
+                  login => {
+                     header   => 'Name      ',
+                     freq     => (),
+                     highest  => 0,
+                  },
+              );
+
+my %ver     = (
+                  maj   => 1,
+                  min   => 0,
+                  patch => 2,
+                  extra => '',
+              );
+
+   # "people" in the last log that we ignore...ftp can be removed from this
+   # list using the valid command line option
+my @verboten = qw/ftp shutdown reboot runlevel wtmp \n/;
+
+#
+# miscellaneous subroutines
+#
+
+   # print out the help screen and quit
+sub help
+{
+   print <<end_of_help;
+$0 [-h] [-v] [output options] [information options]
+  
+   output options:            information options:
+      -a : ascending             -e : everything
+      -d : descending            -l : login hour
+      -f : allow ftp             -m : month
+      -g : graph                 -t : terminal
+      -i : ignore users          -w : weekday
+                                 -y : day
+   
+By default, freq sorts system logins alphabetically by user name.  Options
+can be passed to freq indicating the information to display or the order 
+to display it.  For more information, see the rotfl page or the man page.
+end_of_help
+
+   exit;
+}
+
+   # print the version information and quit
+sub version
+{
+   print <<end_of_version;
+freq version $ver{maj}.$ver{min}.$ver{patch}$ver{extra}
+by Chris Lumens
+end_of_version
+
+   exit;
+}
+
+#
+# screen output routines
+#
+
+   # sort input hash first ascendingly by logins, then by name
+sub order
+{
+   my %in = %{$_[0]};
+   
+   return sort {$in{$a} <=> $in{$b} || $a cmp $b} keys %in;
+}
+
+sub write_entry
+{
+   my %in   = %{$_[0]};
+   my $name =   $_[1];
+   my $max  =   $_[2];
+   
+   $logins  = $in{$name};
+   $bar     = '#'x(25*($logins/$max)) if ($graph);
+            
+   write (STDOUT);
+}
+
+   # args: [0] - reference to hash; [1] - order to sort in
+   # sort the passed in hash and print it out
+sub iterate
+{
+   my %hejaz = %{$_[0]{freq}};
+   my $max   =   $_[0]{highest};
+
+   if ($_[1] == ALPHA)
+   {
+      foreach $name (sort keys %hejaz) 
+      { 
+         write_entry(\%hejaz, $name, $max); 
+      }
+   }
+   elsif ($_[1] == ASCENDING)
+   {
+      foreach $name (order(\%hejaz)) 
+      { 
+         write_entry(\%hejaz, $name, $max); 
+      }
+   }   
+   elsif ($_[1] == DESCENDING)
+   {
+      foreach $name (reverse order(\%hejaz)) 
+      { 
+         write_entry (\%hejaz, $name, $max); 
+      }
+   }
+}
+
+#
+# here begins the main program
+#
+
+getopts ("adefghi:lmtvwy", \%args);
+
+help()                                    if ($args{h});
+version()                                 if ($args{v});
+$numeric = ASCENDING                      if ($args{a});
+$numeric = DESCENDING                     if ($args{d});
+shift @verboten                           if ($args{f});
+$graph = 1                                if ($args{g});
+push (@verboten, split (/,/, $args{i}))   if ($args{i});
+$outputs{in}{header}    = 'Login Hr. '    if ($args{l} || $args{e});
+$outputs{month}{header} = 'Month     '    if ($args{m} || $args{e});
+$outputs{term}{header}  = 'Terminal  '    if ($args{t} || $args{e});
+$outputs{day}{header}   = 'Day of Wk '    if ($args{w} || $args{e});
+$outputs{dim}{header}   = 'Day in Mo '    if ($args{y} || $args{e});
+
+   # loop through the last log and sum up everything
+open (BIG, "last |");
+while (<BIG>)
+{
+   next if (/(^$)|(wtmp begins)/);           # skip trailing garbage
+
+      # system dependant unpack() line follows
+
+      # skip if $login is in the forbidden list
+   next if (grep {$login =~ m/^$_\ *$/} @verboten);
+
+   foreach my $type (qw/day term month dim in/)
+   {
+      if (exists ($outputs{$type}))
+      {
+         $outputs{$type}{freq}{$$type}++;
+
+         if ($graph && 
+             $outputs{$type}{freq}{$$type} > $outputs{$type}{highest})
+         {
+            $outputs{$type}{highest} = $outputs{$type}{freq}{$$type}
+         }
+      }
+   }
+ 
+      # we always update the user login information
+   $outputs{login}{freq}{$login}++;
+
+      # update the graph information, if needed
+   if ($graph && $outputs{login}{freq}{$login} > $outputs{login}{highest})
+   {
+      $outputs{login}{highest} = $outputs{login}{freq}{$login};
+   }
+}
+close (BIG);
+
+   # loop through all the desired outputs and display them
+foreach (sort keys %outputs)
+{
+   $- = 0;        # reset page length counter
+
+   if ($graph)
+   {
+      $top  = <<TOP;
+format STDOUT_TOP =
+$outputs{$_}{header}Logins   Graph
+========= ======== =========================
+.
+TOP
+              
+      $form = <<'FORM';
+format STDOUT =
+@<<<<<<<< @<<<<<<< @<<<<<<<<<<<<<<<<<<<<<<<<
+$name,    $logins, $bar
+.
+FORM
+
+   }
+   else
+   {
+      $top  = <<TOP;
+format STDOUT_TOP =
+$outputs{$_}{header}Logins
+========= ========
+.
+TOP
+      
+      $form = <<'FORM';
+format STDOUT =
+@<<<<<<<< @<<<<<<<
+$name,    $logins
+.
+FORM
+
+   }
+
+   eval ($top);
+   eval ($form);
+
+      # print out the information
+   iterate (\%{$outputs{$_}}, $numeric);
+}
+
+=pod
+
+=head1 NAME
+
+freq - lastlog analyzer
+
+=head1 SYNOPSIS
+
+freq [-h] [-v] [output options] [information options]
+
+=head1 DESCRIPTION
+
+freq is a simple Perl program that analyzes the lastlog.  It displays a
+list of usernames and how many times they have logged in.  By default,
+the list is sorted alphabetically by login name.
+
+The default behavior can be modified through the use of ordering options
+and information options.  Ordering options affect how the output is
+sorted, and affects all displayed information.  Information options 
+affect what kind of information is displayed.
+
+freq now uses the getopts() function that comes standard with Perl.  This
+provides much easier and more flexible use of command line options.  However,
+it also means that freq no longer accepts the long command line options.
+This may change in a later version.  See the documentation for explanations
+of what the short options do.
+
+=head1 OPTIONS
+
+=head2 GENERAL
+
+=over 4
+
+=item -h
+
+Displays the freq help screen.  It lists the valid command line options and
+a short description of each.
+
+=item -v
+
+Displays the version of freq and quits.
+
+=back
+
+=head2 OUTPUT
+
+=over 4
+
+=item -a
+
+Sorts the list of logins by number of logins, in ascending order.  In the
+case of a tie, the names are then sorted alphabetically.
+
+=item -d
+
+Sorts the list of logins by number of logins, in descending order.  In the
+case of a tie, the names are then sorted in reverse alphabetic order.
+
+=item -f
+
+Displays ftp logins, in addition to the normal user logins.
+
+=item -g
+
+Displays a graph representation of the number of logins.  The bar displayed is
+proportional in length to the percentage of logins.  For example, if a person
+has 50 logins out of 100 total, they will have a bar that is approximately 
+half the length of the total area allowed (25 columns).
+
+=item -i
+
+This option can be used to set a list of login names to ignore in the output.
+It takes the form of the option switch, followed by an "=", followed by
+a comma seperated list of names.  There are no spaces.  See L<"EXAMPLES">
+later in this documentation.
+
+=back
+
+=head2 INFORMATION
+
+=over 4
+
+=item -e
+
+Enables all of the following output options: -l, -m, -t, -w, -y
+
+=item -l
+
+Displays a list of the logins per hour of the day.
+
+=item -m
+
+Displays a list of the logins per month.
+
+=item -t
+
+Displays a list of the logins per terminal.
+
+=item -w
+
+Displays a list of the logins per day of the week.  Specifically, this option
+will list logins for Sunday through Saturday.
+
+=item -y
+
+Displays a list of the logins per day in the month.  Specifically, this
+option will list logins for the numeric day of the month, instead of the
+weekday name.
+
+=back
+
+=head1 EXAMPLES
+
+=over 4
+
+To set a list of names to ignore:
+
+      freq -i chris,ted,allison
+
+=back
+
+=over 4
+
+To display an ascending list of logins and terminals, with a graph:
+
+      freq -tag
+
+=back
+
+=over 4
+
+To display an ascending graph of logins and ignore a user:
+
+      freq -agi david
+
+=back
+
+=head1 FILES
+
+F</var/log/wtmp> -- login database
+
+=head1 SEE ALSO
+
+B<last(1)>
+
+=head1 CAVEATS
+
+Does not accept long command lines options.  D'oh.
+
+=head1 AUTHOR
+
+Chris Lumens <chris@bangmoney.org>
+
+=cut

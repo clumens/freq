@@ -1,0 +1,18 @@
+Check out the "install.pl" program.  You'll want to look at the variables
+up at the top of the script.  By default, freq will be installed into
+/usr/local.  If you don't like that prefix, change the $PREFIX variable as
+you see fit.
+
+If you've installed my "rotfl" program, you may with to set the
+ROTFL_PREFIX variable in "install.pl".  Setting this variable will give
+the location of a directory for the rotfl page to be installed to.
+
+Most people should just run install.pl as root and it'll be fine.
+
+The first thing that the install program will do is attempt to find several
+programs that are required for the rest of the installation.  Then, it will
+attempt to figure out what OS you are using.  In the case of a Linux
+system, it will also attempt to figure out what version of the C library
+you are using.  These results will then be used to write the final script.
+
+- Chris

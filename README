@@ -1,0 +1,52 @@
+What is freq?
+-------------
+freq is a simple Perl script to analyze how many times people have logged
+in.  That's all it does.  There are a few command line options that you
+can use for sorting the results.  Check the man page.
+
+freq comes with documentation in two formats - a man page and a rotfl
+page.  rotfl is a simple text formatting language and an interpreter
+for that language that I also wrote.  For more information, see the
+rotfl web page:  http://www.bangmoney.org/projects/rotfl
+
+
+What is required?
+-----------------
+freq requires a relatively recent Perl interpreter to work.  I test 
+and develop on 5.005_03.  I know that freq will not work on Perl 4.
+I have not tested on any other Perl 5 versions, though.
+
+freq has been found to work on the following systems:
+
+   - Slackware Linux 4.0, 7.x
+   - Red Hat Linux 6.0
+   - Mandrake Linux 6.1, 7.1
+   - SuSE Linux 6.2
+   - NEXTSTEP 3.3
+   - IRIX 6.5.11m
+
+In addition, there is varying support for other UNIX-based systems.  The
+following worked at one time or another:
+
+   - SunOS
+   - AIX 4.3.2, 4.2.1, 3.2.5
+   - DEC UNIX 4.0
+   - IRIX 6.2
+
+If you would like to see freq working on your favorite UNIX-based 
+operating system, please send me an email (address at the bottom of this
+file) so we can talk about how your lastlog is formatted.
+
+If you find freq to work on any other operating systems (or distributions)
+please send me an email so it can be added to the list.
+
+
+How do I install freq?
+----------------------
+Read the INSTALL file that came with this archive.
+
+
+Who is responsible?
+-------------------
+freq is maintained by Chris Lumens <chris@bangmoney.org>.  Patches and
+ideas are welcome.

@@ -1,0 +1,54 @@
+.[R
+.[H
+.[A Chris Lumens
+.[D 12-3-1999
+.[M 1-1-2000
+.[T freq lastlog analyzer
+.[V 0.6.3
+.]H
+
+.[U What is freq?
+freq is a simple Perl program that analyzes the lastlog.  It displays a
+list of usernames and how many times they have logged in.  By default,
+the list is sorted alphabetically by login name.
+
+The displayed information can be altered through the use of two kinds of
+command line options.  The ordering options affect how the displayed
+information is sorted.  Any ordering options specified apply to all
+kinds of output.  The information options affect what kind of 
+information will be displayed.
+
+freq is part of the standard collection of bangmoney.org utilities.
+
+.[U Usage
+freq [-h|--help] [-v|--version] [output options] [information options]
+
+.[U General command line options
+.[L
+.[l -h | --help      displays the help screen and quits.
+.[l -v | --version   displays the version and license info and quits.
+.]L
+
+.[U Output options
+.[L
+.[l -a | --ascending    sorts by number of logins, in ascending order.
+.[l -d | --descending   sorts by number of logins, in descending order.
+.[l -f | --ftp          displays ftp logins as well as normal users.
+.[l -g | --graph        displays a graph representation of the stats.
+.[l -i | --ignore       specifies a comma-separated list of names to ignore.
+.]L
+
+.[U Information options
+.[L
+.[l -l | --login-hour   outputs the number of logins per hour of the day
+.[l -m | --month        outputs the number of logins per month
+.[l -t | --terminal     outputs the number of logins per terminal
+.[l -w | --weekday      outputs the number of logins per day of the week
+.[l -y | --day          outputs the number of logins per day of the month
+.]L
+
+.[U Who is responsible?
+freq is currently being maintained by Chris Lumens <chris@bangmoney.org>.
+Patches and ideas are welcome.
+.]R
+

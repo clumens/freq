@@ -1,0 +1,60 @@
+version 1.0.3
+=============
+- Added support for FreeBSD.  (Contributed by Ying-Chieh Liao)
+
+version 1.0.2
+=============
+- Followed the advice on page 706 of _Programming Perl_, Third Edition
+  regarding eval blocks.  The evals that were used to piece together
+  variable names have been removed since we can just use symbolic
+  references instead.  This results in a noticable speedup.
+- Modified the help screen.
+- Removed check for rootness from the installer.
+
+version 1.0.1
+=============
+- Made a lot of changes to the install script:
+    - Removed dependance on "uname", since we can get the same information
+      from some Perl variables (Perl is so cool :)
+    - Removed fatal dependance on ldd, since it isn't found on all systems
+    - Now use PATH environment variable as the path.
+    - Removed dependance on GNU install, opting instead for chmod and chown.
+      Again, this program isn't found on all platforms.
+    - Cleaned up a lot of the code.  It was pretty ugly.
+    - Reversed how it looks for programs ("This would be easier if we
+      did it backwards").
+    - Make the directory tree if it doesn't exist.
+- Added support for NEXTSTEP 3.3. (I got a NeXT, what can I say?)
+
+version 1.0.0
+=============
+- Added preliminary support for AIX 3.x.x, AIX 4.x.x, and DEC UNIX to the
+  install program.
+- Changed to using getopts() for command line processing.  This completely
+  breaks long options, but makes short options much easier to use.  See
+  the man page for some examples.
+- Added the COPYING file just so everyone knows what the copyright is.
+- Added the -e option, which is the equivalent of specifiying all the
+  information options.
+- Removed a lot of duplicate code.
+
+version 0.4.7-final
+===================
+- Documentation cleanup: documentation is now stored in POD format in
+  the source code itself.  This makes it easy to generate man pages, info
+  pages, html documents, and other formats straight from the source code.
+- You can now specify a list of people to ignore in the output.  This
+  is done via the "--ignore=list" or "-i=list" options.  list is a comma
+  seperated list of names to ignore. 
+
+version 0.4.7-pre7
+==================
+- Use the "--ftp" or "-f" options to display logins via ftp.
+- The graph now displays an actual percentage.  If a bar is 25 columns long
+  (as long as the header above it), then that is 100% of the logins.
+- Updated install program to detect SunOS and IRIX.  The installer is now as
+  big as the actual program :)
+
+before 0.4.7-pre7
+=================
+- didn't keep a changelog, therefore everything has changed

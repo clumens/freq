@@ -1,0 +1,23 @@
+DEC/COMPAQ Digital Unix 4.0F:
+
+root@alpha (~)# uname -a
+OSF1 alpha V4.0 1229 alpha
+root@alpha (~)# uname
+OSF1
+<Mon Jan  3 14:49:40>
+root@alpha (~)# last -15
+root      ttyp5        nixdorf.co.gilch Mon Jan 03 14:49   still logged in
+root      ttyp5        nixdorf.co.gilch Mon Jan 03 14:43 - 14:45  (00:01)
+root      ttyp5        nixdorf.co.gilch Mon Jan 03 12:44 - 13:00  (00:16)
+joan      ttyp4        200.21.1.49      Mon Jan 03 08:42   still logged in
+joan      ttyp3        200.21.1.49      Mon Jan 03 08:40   still logged in
+traf1     ttyp2        200.21.1.48      Mon Jan 03 08:37   still logged in
+traf1     ttyp1        200.21.1.235     Mon Jan 03 08:22   still logged in
+seena     ttyp0        seenar.co.gilchr Mon Jan 03 08:21   still logged in
+root      console                       Mon Jan 03 08:14   still logged in
+LOGIN     console                       Mon Jan 03 08:14 - 08:14  (00:00)
+root      console                       Mon Jan 03 08:14 - 08:14  (00:00)
+root      :0                            Mon Jan 03 08:14 - 08:14  (00:00)
+shutdown  ~                             Thu Dec 30 17:06
+root      console                       Thu Dec 30 16:51 - down - 16:51 (00:14)
+LOGIN     console                       Thu Dec 30 16:51 - 16:51  (00:00)

@@ -1,0 +1,64 @@
+IBM AIX 4.3.2
+# uname
+AIX
+# uname -a
+AIX tax 3 4 000057913500
+# last -10
+root      pts/1        nixdorf.co.gilch       Jan 11 08:38   still logged in.
+terri     tty7                                Jan 11 08:24   still logged in.
+marilyn   tty8                                Jan 11 08:23   still logged in.
+pub       pts/0        loopback               Jan 10 08:30 - 16:50 (08:19)
+marilyn   tty8                                Jan 10 08:18 - 16:50 (08:31)
+terri     tty7                                Jan 10 08:18 - 16:50 (08:32)
+pub       pts/0        loopback               Jan 07 08:45 - 16:51 (08:06)
+terri     tty7                                Jan 07 08:32 - 16:34 (08:02)
+pub       pts/0        loopback               Jan 07 08:31 - 08:44 (00:12)
+
+IBM AIX 4.2.1:
+
+root@clerk2 (~)# uname -a
+AIX clerk2 2 4 000377645700
+<Mon Jan  3 14:48:46>
+root@clerk2 (~)# uname
+AIX
+root@clerk2 (~)# last -12
+cash      pts/3        cash.co.gilchris       Jan 03 08:23   still logged in.
+seena     pts/2        seenar.co.gilchr       Jan 03 08:23   still logged in.
+bert      pts/1        bert.co.gilchris       Jan 03 08:17 - 09:56 (01:39)
+facccse   pts/0        192.168.70.10          Jan 03 08:16 - 08:32 (00:15)
+root      tty0                                Jan 03 08:13   still logged in.
+reboot    ~                                   Jan 03 08:12
+shutdown  tty0                                Dec 30 17:48
+root      pts/1        image.co.gilchri       Dec 30 16:54 - 16:54 (00:00)
+facccse   pts/13       192.168.70.10          Dec 30 15:26 - 15:45 (00:18)
+joan      pts/5        200.21.1.49            Dec 30 15:16 - 16:23 (01:07)
+bellis    ftp          deniset.co.gilch       Dec 30 15:00 - 15:01 (00:01)
+joan      pts/11       200.21.1.49            Dec 30 14:55 - 16:24 (01:28)
+
+IBM AIX 3.2.5:
+
+root@clerk (/usr/root)# uname -a
+AIX clerk 2 3 000093363500
+root@clerk (/usr/root)# uname
+AIX
+root@clerk (/usr/root)# last -20
+root      pts/5        image.co.gilchri   Mon Jan 03 14:54   still logged in.
+cherylw   pts/1        cherylw.co.gilch   Mon Jan 03 14:13   still logged in.
+dor1      tty1                            Mon Jan 03 12:33 - 12:35 (00:02)
+sherreep  pts/4        sherreep.co.gilc   Mon Jan 03 10:40   still logged in.
+deniset   pts/3        deniset.co.gilch   Mon Jan 03 10:07   still logged in.   
+beth      pts/3        bethl.em.co.gilc   Mon Jan 03 09:38 - 09:40 (00:01)
+cherylw   pts/1        cherylw.co.gilch   Mon Jan 03 08:26 - 13:13 (04:47)
+charlotb  pts/2        charlotteb.co.gi   Mon Jan 03 08:24   still logged in.
+cherylw   pts/1        cherylw.co.gilch   Mon Jan 03 08:24 - 08:25 (00:01)
+samuelf   pts/0        sam.co.gilchrist   Mon Jan 03 08:21   still logged in.
+root      tty0                            Mon Jan 03 08:19 - 08:19 (00:00)
+reboot    ~                               Mon Jan 03 08:17
+deniset   pts/2        cindyc.co.gilchr   Thu Dec 30 16:34 - 16:47 (00:13)
+root      pts/1        image.co.gilchri   Thu Dec 30 15:28 - 16:35 (01:06)
+root      tty0                            Thu Dec 30 15:26 - System is halted by system administrator.  (02:28)
+beth      pts/0        bethl.em.co.gilc   Thu Dec 30 15:25 - 17:10 (01:44)  
+root      tty0                            Thu Dec 30 15:23 - 15:25 (00:02)  
+reboot    ~                               Thu Dec 30 15:21
+root      tty0                            Thu Dec 30 15:17 - System is halted by system administrator. (00:01)
+ellisb    ftp          deniset.co.gilch   Thu Dec 30 15:06 - 15:06 (00:00)
