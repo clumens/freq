@@ -1,10 +1,10 @@
 .[R
 .[H
 .[A Chris Lumens
-.[D 12-3-1999
-.[M 1-1-2000
+.[D 12-03-1999
+.[M 06-15-2004
 .[T freq lastlog analyzer
-.[V 0.6.3
+.[V 1.1.0 Tournament Edition
 .]H
 
 .[U What is freq?
@@ -21,30 +21,30 @@ information will be displayed.
 freq is part of the standard collection of bangmoney.org utilities.
 
 .[U Usage
-freq [-h|--help] [-v|--version] [output options] [information options]
+freq [-h] [-v] [output options] [information options]
 
 .[U General command line options
 .[L
-.[l -h | --help      displays the help screen and quits.
-.[l -v | --version   displays the version and license info and quits.
+.[l -h    displays the help screen and quits.
+.[l -v    displays the version and license info and quits.
 .]L
 
 .[U Output options
 .[L
-.[l -a | --ascending    sorts by number of logins, in ascending order.
-.[l -d | --descending   sorts by number of logins, in descending order.
-.[l -f | --ftp          displays ftp logins as well as normal users.
-.[l -g | --graph        displays a graph representation of the stats.
-.[l -i | --ignore       specifies a comma-separated list of names to ignore.
+.[l -a    sorts by number of logins, in ascending order.
+.[l -d    sorts by number of logins, in descending order.
+.[l -f    displays ftp logins as well as normal users.
+.[l -g    displays a graph representation of the stats.
+.[l -i    specifies a comma-separated list of names to ignore.
 .]L
 
 .[U Information options
 .[L
-.[l -l | --login-hour   outputs the number of logins per hour of the day
-.[l -m | --month        outputs the number of logins per month
-.[l -t | --terminal     outputs the number of logins per terminal
-.[l -w | --weekday      outputs the number of logins per day of the week
-.[l -y | --day          outputs the number of logins per day of the month
+.[l -l    outputs the number of logins per hour of the day
+.[l -m    outputs the number of logins per month
+.[l -t    outputs the number of logins per terminal
+.[l -w    outputs the number of logins per day of the week
+.[l -y    outputs the number of logins per day of the month
 .]L
 
 .[U Who is responsible?
