@@ -18,10 +18,8 @@ developed on 5.005_03, which may still work.
 
 freq has been found to work on the following systems:
 
-   - Slackware Linux 4.0, 7.x, 8.x, 9.x
-   - Red Hat Linux 6.0
-   - Mandrake Linux 6.1, 7.1
-   - SuSE Linux 6.2
+   - FreeBSD 5.2.x
+   - Linux of all varieties
    - NEXTSTEP 3.3
    - IRIX 6.5.11m
 
