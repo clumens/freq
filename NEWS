@@ -1,3 +1,10 @@
+version 1.0.4
+=============
+- Removed the install.pl program, which was always pretty crummy.  I
+  promise I'll never release something that stupid and pointless again.
+- Added support for the lastlog format that is at least in use in
+  glibc-2.3, and possibly earlier.
+
 version 1.0.3
 =============
 - Added support for FreeBSD.  (Contributed by Ying-Chieh Liao)

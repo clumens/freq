@@ -1,16 +1,17 @@
 #!/usr/bin/perl
 #
-# freq - a script to print out how often everyone has logged on, noonch
+# freq - a script to print out how often everyone has logged on
 #
 # by Chris Lumens
-# last modified on March 2, 2001
-# (c) 1999, 2000, 2001 Chris Lumens
+# last modified on June 1, 2004
+# (c) 1999-2004 Chris Lumens
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+use Config;
 use Getopt::Std;
 
 use constant ALPHA      => 0;
@@ -21,7 +22,7 @@ my %args;            # command line arguments
 my $numeric = ALPHA; # with constants, no explanation is needed :)
 my $graph   = 0;     # no graph = 0; graph = 1
 
-   # we always want the basic information, so define it right now
+# we always want the basic information, so define it right now
 my %outputs = (
                   login => {
                      header   => 'Name      ',
@@ -37,15 +38,15 @@ my %ver     = (
                   extra => '',
               );
 
-   # "people" in the last log that we ignore...ftp can be removed from this
-   # list using the valid command line option
+# "people" in the last log that we ignore...ftp can be removed from this
+# list using the valid command line option
 my @verboten = qw/ftp shutdown reboot runlevel wtmp \n/;
 
 #
 # miscellaneous subroutines
 #
 
-   # print out the help screen and quit
+# print out the help screen and quit
 sub help
 {
    print <<end_of_help;
@@ -67,7 +68,7 @@ end_of_help
    exit;
 }
 
-   # print the version information and quit
+# print the version information and quit
 sub version
 {
    print <<end_of_version;
@@ -82,7 +83,7 @@ end_of_version
 # screen output routines
 #
 
-   # sort input hash first ascendingly by logins, then by name
+# sort input hash first ascendingly by logins, then by name
 sub order
 {
    my %in = %{$_[0]};
@@ -102,8 +103,8 @@ sub write_entry
    write (STDOUT);
 }
 
-   # args: [0] - reference to hash; [1] - order to sort in
-   # sort the passed in hash and print it out
+# args: [0] - reference to hash; [1] - order to sort in
+# sort the passed in hash and print it out
 sub iterate
 {
    my %hejaz = %{$_[0]{freq}};
@@ -151,15 +152,66 @@ $outputs{term}{header}  = 'Terminal  '    if ($args{t} || $args{e});
 $outputs{day}{header}   = 'Day of Wk '    if ($args{w} || $args{e});
 $outputs{dim}{header}   = 'Day in Mo '    if ($args{y} || $args{e});
 
-   # loop through the last log and sum up everything
+# Figure out the lastlog line format for this machine.
+if ($Config{'osname'} =~ /linux/i)
+{
+   # Newer Linux glibc2-based systems - let me know when this format
+   # started being used.
+   if ($Config{'libc'} =~ /libc-2\.3/)
+   {
+      $unpack_str = "a8 x1 a6 x24 a3 x1 a3 x1 a2 x1 a2";
+   }
+   elsif ($Config{'libc'} =~ /libc-2\./)
+   {
+      $unpack_str = "a8 x10 a6 x20 a3 x1 a3 x1 a2 x1 a2";
+   }
+   # Linux libc5-based systems
+   else
+   {
+      $unpack_str = "a8 x2 a6 x24 a3 x1 a3 x1 a2 x1 a2";
+   }
+}
+elsif ($Config{'osname'} =~ /sunos/i)
+{  
+   $unpack_str = "a8 x2 a6 x24 a3 x1 a3 x1 a2 x1 a2";
+}
+elsif ($Config{'osname'} =~ /irix/i)
+{
+   $unpack_str = "a8 x1 a6 x29 a3 x1 a3 x1 a2 x1 a2";
+}
+elsif ($Config{'osname'} =~ /osf1/i)
+{
+   $unpack_str = "a8 x2 a8 x22 a3 x1 a3 x1 a3 x1 a2";
+}
+elsif ($Config{'osname'} =~ /aix/i)
+{  
+   if (unpack ("a1", $Config{'osvers'}) == 4)
+   {
+      $unpack_str = "a8 x2 a8 x28 a3 x1 a3 x1 a2";
+   }
+   elsif (unpack ("a1", $Config{'osvers'}) == 3)
+   {
+      $unpack_str = "a8 x2 a8 x24 a3 x1 a3 x1 a3 x1 a2";
+   }
+}
+elsif ($Config{'osname'} =~ /next/i)
+{
+   $unpack_str = "a8 x2 a8 x18 a3 x1 a3 x1 a2 x1 a2";
+}
+elsif ($Config{'osname'} =~ /freebsd/i)
+{  
+   $unpack_str = "a16 x1 a6 x20 a3 x1 a3 x1 a2 x1 a2";
+}
+
+# loop through the last log and sum up everything
 open (BIG, "last |");
 while (<BIG>)
 {
    next if (/(^$)|(wtmp begins)/);           # skip trailing garbage
 
-      # system dependant unpack() line follows
+   ($login, $term, $day, $month, $dim, $in) = unpack ($unpack_str, $_);
 
-      # skip if $login is in the forbidden list
+   # skip if $login is in the forbidden list
    next if (grep {$login =~ m/^$_\ *$/} @verboten);
 
    foreach my $type (qw/day term month dim in/)
@@ -176,10 +228,10 @@ while (<BIG>)
       }
    }
  
-      # we always update the user login information
+   # we always update the user login information
    $outputs{login}{freq}{$login}++;
 
-      # update the graph information, if needed
+   # update the graph information, if needed
    if ($graph && $outputs{login}{freq}{$login} > $outputs{login}{highest})
    {
       $outputs{login}{highest} = $outputs{login}{freq}{$login};
@@ -187,7 +239,7 @@ while (<BIG>)
 }
 close (BIG);
 
-   # loop through all the desired outputs and display them
+# loop through all the desired outputs and display them
 foreach (sort keys %outputs)
 {
    $- = 0;        # reset page length counter
@@ -230,7 +282,7 @@ FORM
    eval ($top);
    eval ($form);
 
-      # print out the information
+   # print out the information
    iterate (\%{$outputs{$_}}, $numeric);
 }
 
