@@ -1,5 +1,5 @@
-version 1.1 Tournament Edition
-==============================
+version 1.1.0 Tournament Edition
+================================
 - Removed the install.pl program, which was always pretty crummy.  I
   promise I'll never release something that stupid and pointless again.
 - Added support for the lastlog format that is at least in use in
