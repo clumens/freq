@@ -12,13 +12,13 @@ rotfl web page:  http://www.bangmoney.org/projects/rotfl
 
 What is required?
 -----------------
-freq requires a relatively recent Perl interpreter to work.  I test 
-and develop on 5.005_03.  I know that freq will not work on Perl 4.
-I have not tested on any other Perl 5 versions, though.
+freq requires a Perl interpreter to work.  I test and develop on 5.8.3.  I
+know that freq will not work on Perl 4.  Older version of freq were
+developed on 5.005_03, which may still work.
 
 freq has been found to work on the following systems:
 
-   - Slackware Linux 4.0, 7.x
+   - Slackware Linux 4.0, 7.x, 8.x, 9.x
    - Red Hat Linux 6.0
    - Mandrake Linux 6.1, 7.1
    - SuSE Linux 6.2
